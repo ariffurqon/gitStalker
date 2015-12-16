@@ -24618,34 +24618,53 @@
 /* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var React = __webpack_require__(1);
 
 	var Repos = React.createClass({
-		displayName: 'Repos',
+	  displayName: "Repos",
 
-		propTypes: {
-			username: React.PropTypes.string.isRequired,
-			repos: React.PropTypes.array.isRequired
-		},
-		render: function render() {
-			console.log('Repos', this.props.repos);
-			return React.createElement(
-				'div',
-				null,
-				React.createElement(
-					'p',
-					null,
-					'Repos'
-				),
-				React.createElement(
-					'p',
-					null,
-					'Repos'
-				)
-			);
-		}
+	  propTypes: {
+	    username: React.PropTypes.string.isRequired,
+	    repos: React.PropTypes.array.isRequired
+	  },
+	  render: function render() {
+	    var repos = this.props.repos.map(function (repo, index) {
+	      return React.createElement(
+	        "li",
+	        { className: "list-group-item", key: index },
+	        repo.html_url && React.createElement(
+	          "h4",
+	          null,
+	          React.createElement(
+	            "a",
+	            { href: repo.html_url },
+	            repo.name
+	          )
+	        ),
+	        repo.description && React.createElement(
+	          "p",
+	          null,
+	          repo.description
+	        )
+	      );
+	    });
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "h3",
+	        null,
+	        " User Repos "
+	      ),
+	      React.createElement(
+	        "ul",
+	        { className: "list-group" },
+	        repos
+	      )
+	    );
+	  }
 	});
 
 	module.exports = Repos;
@@ -25457,22 +25476,22 @@
 	var axios = __webpack_require__(223);
 
 	function getRepos(username) {
-		return axios.get('https://api.github/users' + username + '/repos');
-	};
+	  return axios.get('https://api.github.com/users/' + username + '/repos');
+	}
 
 	function getUserInfo(username) {
-		return axios.get('https://api.github/users' + username);
-	};
+	  return axios.get('https://api.github.com/users/' + username);
+	}
 
 	var helpers = {
-		getGithubInfo: function getGithubInfo() {
-			return axios.all([getRepos(username), getUserInfo(username)]).then(function (arr) {
-				return {
-					repos: arr[0].data,
-					bio: arr[1].data
-				};
-			});
-		}
+	  getGithubInfo: function getGithubInfo(username) {
+	    return axios.all([getRepos(username), getUserInfo(username)]).then(function (arr) {
+	      return {
+	        repos: arr[0].data,
+	        bio: arr[1].data
+	      };
+	    });
+	  }
 	};
 
 	module.exports = helpers;
