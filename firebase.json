@@ -1,0 +1,9 @@
+{
+  "firebase": "gitstalker",
+  "public": "public",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
